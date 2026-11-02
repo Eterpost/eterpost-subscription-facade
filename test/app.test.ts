@@ -10,6 +10,7 @@ import { Config } from '../src/config';
 
 
 interface BackendRequest {
+  authorization?: string;
   body: unknown;
   contentType?: string;
   url?: string;
@@ -59,6 +60,7 @@ describe('subscription-facade', function () {
     templatesDir = prepareTemplates();
     backend = createServer(async (req, res) => {
       requests.push({
+        ...(req.headers.authorization ? { authorization: req.headers.authorization } : {}),
         body: JSON.parse(await readBody(req)),
         contentType: req.headers['content-type'],
         url: req.url
@@ -80,8 +82,10 @@ describe('subscription-facade', function () {
     reply = SUCCESS;
   });
 
-  async function startFacade (mailingId: number | null = null): Promise<string> {
-    const config: Config = { backend: backendUrl, mailingId, port: 0 };
+  async function startFacade (
+    mailingId: number | null = null, apiKey?: string
+  ): Promise<string> {
+    const config: Config = { apiKey, backend: backendUrl, mailingId, port: 0 };
     const server = createServer(createApp(config, { templatesDir }));
     servers.push(server);
     return listen(server);
@@ -127,6 +131,12 @@ describe('subscription-facade', function () {
     const page = await get(`${facade}/subscribe?mailingId=12&email=a%40b.ru&code=bad`);
     assert.equal(page.status, 200);
     assert.match(page.text, /Не удалось подтвердить подписку/);
+  });
+
+  it('should pass the API key to mail-server', async function () {
+    const facade = await startFacade(null, 'ep_secret');
+    await get(`${facade}/subscribe?mailingId=12&email=a%40b.ru&code=x`);
+    assert.equal(requests[0].authorization, 'Bearer ep_secret');
   });
 
   it('should use fixed mailingId from config', async function () {

@@ -21,7 +21,8 @@ export function createApp (config: Config, options: AppOptions = {}): express.Ex
   app.enable('view cache');
   app.set('views', templatesDir);
 
-  app.get('/subscribe', mailingAction('subscribe', config.backend, config.mailingId));
-  app.get('/unsubscribe', mailingAction('unsubscribe', config.backend, config.mailingId));
+  const backend = { apiKey: config.apiKey, url: config.backend };
+  app.get('/subscribe', mailingAction('subscribe', backend, config.mailingId));
+  app.get('/unsubscribe', mailingAction('unsubscribe', backend, config.mailingId));
   return app;
 }

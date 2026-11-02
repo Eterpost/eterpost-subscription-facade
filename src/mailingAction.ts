@@ -4,6 +4,11 @@ import { catchPromise } from './catchPromise';
 
 export type MailingAction = 'subscribe' | 'unsubscribe';
 
+export interface Backend {
+  apiKey?: string;
+  url: string;
+}
+
 /**
  * Обработчик страницы подписки/отписки: передаёт email и code из ссылки
  * в mail-server (POST /mailings/<id>/<action>) и показывает шаблон <action>
@@ -11,7 +16,7 @@ export type MailingAction = 'subscribe' | 'unsubscribe';
  * и флаг subscribeSuccess/unsubscribeSuccess.
  */
 export function mailingAction (
-  action: MailingAction, backend: string, fixedMailingId: number | null
+  action: MailingAction, backend: Backend, fixedMailingId: number | null
 ) {
   return catchPromise(async function (req: Request, res: Response) {
     const email = queryString(req, 'email');
@@ -21,7 +26,7 @@ export function mailingAction (
     let result: BackendResult = { success: false };
     // mailingId попадает в путь запроса к mail-server, поэтому допускаются только цифры
     if (email && mailingId !== undefined && /^\d+$/.test(String(mailingId))) {
-      result = await callBackend(`${backend}/mailings/${mailingId}/${action}`, { code, email });
+      result = await callBackend(backend, `/mailings/${mailingId}/${action}`, { code, email });
     }
 
     res.render(action, {
@@ -37,10 +42,16 @@ interface BackendResult {
   text?: string;
 }
 
-async function callBackend (url: string, body: object): Promise<BackendResult> {
-  const response = await fetch(url, {
+async function callBackend (
+  backend: Backend, path: string, body: object
+): Promise<BackendResult> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (backend.apiKey) {
+    headers.Authorization = `Bearer ${backend.apiKey}`;
+  }
+  const response = await fetch(backend.url + path, {
     body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     method: 'POST'
   });
   if (!response.ok) {

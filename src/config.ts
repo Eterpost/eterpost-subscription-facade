@@ -3,6 +3,8 @@ import { join } from 'node:path';
 
 
 export interface Config {
+  // Ключ API mail-server (заголовок Authorization: Bearer)
+  apiKey?: string;
   // URL API mail-server
   backend: string;
   // Если указан, запросы всегда идут к этой рассылке, иначе — к mailingId из запроса

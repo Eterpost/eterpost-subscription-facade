@@ -72,6 +72,7 @@ $ docker run -v $PWD/config.json:/app/config.json -p 8001:8001 subscription-faca
 ```json
 {
   "backend": "http://192.168.12.34:8000",
+  "apiKey": "ep_...",
   "mailingId": null,
   "port": 8001,
   "host": "127.0.0.1"
@@ -79,6 +80,9 @@ $ docker run -v $PWD/config.json:/app/config.json -p 8001:8001 subscription-faca
 ```
 
 - `backend` — адрес API mail-server;
+- `apiKey` — ключ API mail-server (выдаётся командой `api-keys add` mail-server,
+  передаётся в заголовке `Authorization: Bearer`); нужен, когда на mail-server
+  включена проверка ключей;
 - `mailingId` — если задан, все запросы идут к этой рассылке;
 - `port` — порт HTTP-сервера;
 - `host` — адрес для приёма соединений (по умолчанию все интерфейсы); за
