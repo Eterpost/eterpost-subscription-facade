@@ -1,7 +1,7 @@
 # subscription-facade
 
 Публичный HTTP-сервер со страницами подписки и отписки для рассылок
-[mail-server](https://github.com/Etersoft/mail-server). Человек переходит по
+[mail-server](https://github.com/Eterpost/eterpost-server). Человек переходит по
 ссылке из письма, subscription-facade передаёт адрес и код в API mail-server и
 показывает HTML-страницу с результатом:
 
@@ -17,7 +17,7 @@
 У API mail-server нет аутентификации, поэтому из интернета должен быть доступен
 только subscription-facade, а mail-server — лишь из внутренней сети. Как устроена
 вся система (mail-server, subscription-facade,
-[mail-sorter](https://github.com/Etersoft/mail-sorter)), описано в README
+[mail-sorter](https://github.com/Eterpost/eterpost-sorter)), описано в README
 mail-server.
 
 ## Ссылки в письмах

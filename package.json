@@ -1,5 +1,5 @@
 {
-  "name": "subscription-facade",
+  "name": "eterpost-subscription-facade",
   "version": "0.1.0",
   "description": "Server that controls user subscription",
   "main": "dist/src/index.js",
