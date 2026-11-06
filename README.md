@@ -1,4 +1,9 @@
-# subscription-facade
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/pochtar-logo-dark.svg">
+  <img alt="Почтарь" src="docs/pochtar-logo.svg" height="64">
+</picture>
+
+# eterpost-subscription-facade
 
 Публичный HTTP-сервер со страницами подписки и отписки для рассылок
 [mail-server](https://github.com/Eterpost/eterpost-server). Человек переходит по

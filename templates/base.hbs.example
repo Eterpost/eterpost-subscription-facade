@@ -5,7 +5,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name='color-scheme' content='light dark'>
     <title>{{ title }} — Eterpost</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a66c2'/%3E%3Cpath d='M7 10h18v12H7zM7 10l9 7 9-7' fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23ffc72c'/%3E%3Cg fill='none' stroke='%231f2328' stroke-width='40' stroke-linejoin='round' stroke-linecap='round'%3E%3Crect x='160' y='160' width='272' height='192' rx='20'/%3E%3Cpath d='M168 172l128 98 128-98'/%3E%3Cpath d='M72 208h48M96 256h40M72 304h48'/%3E%3C/g%3E%3C/svg%3E">
     <style>
       :root {
         color-scheme: light dark;
