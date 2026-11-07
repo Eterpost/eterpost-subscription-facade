@@ -1,6 +1,7 @@
 {
   "name": "eterpost-subscription-facade",
   "version": "0.1.0",
+  "license": "AGPL-3.0",
   "description": "Server that controls user subscription",
   "main": "dist/src/index.js",
   "scripts": {

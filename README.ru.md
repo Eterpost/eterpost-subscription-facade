@@ -121,3 +121,7 @@ $ docker run -v $PWD/config.json:/app/config.json -p 8001:8001 subscription-faca
 - `npm test` — сборка и тесты (`node:test`, mail-server подменяется локальным HTTP-сервером);
 - `npm run lint`, `npm run typecheck`;
 - `npm run watch` и `npm run watch-run` — пересборка и перезапуск при изменениях.
+
+## ![AGPL](https://www.gnu.org/graphics/agplv3-88x31.png) Лицензия
+
+GNU AGPL v3, см. [LICENSE](LICENSE).

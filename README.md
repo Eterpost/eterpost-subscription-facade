@@ -121,3 +121,7 @@ If mail-server is unavailable, the response is 500.
 - `npm test` — build and tests (`node:test`, mail-server is replaced with a local HTTP server);
 - `npm run lint`, `npm run typecheck`;
 - `npm run watch` and `npm run watch-run` — rebuild and restart on changes.
+
+## ![AGPL](https://www.gnu.org/graphics/agplv3-88x31.png) License
+
+GNU AGPL v3, see [LICENSE](LICENSE).
