@@ -51,6 +51,22 @@ mailing has "subscription through the API" turned on):
 https://subscribe.example.com/unsubscribe?mailingId={{mailing.id}}&email={{receiver.email}}&code={{receiver.code}}
 ```
 
+## Tracking of opens and clicks
+
+If tracking is on for a mailing, mail-server puts links to the facade into the
+letters (`server.tracking.url` in mail-server is the public address of the
+facade):
+
+| Address | What it does | mail-server call |
+|---|---|---|
+| `/t/o/<mailing>/<token>` | serves a transparent 1×1 image, even if mail-server is unavailable | `POST /tracking/open` |
+| `/t/c/<mailing>/<token>/<number>` | redirects (302) to the original link; an unknown one gives 404 | `POST /tracking/click` |
+
+mail-server keeps the original address of a link, and the click address does
+not contain it, so the facade cannot be used to redirect to an arbitrary
+address. nginx needs `location /t/` for the facade (see `deploy/lxc/nginx` in
+mail-server).
+
 ## Installation and start
 
 Node.js 22.23 or newer is required.

@@ -51,6 +51,20 @@ https://subscribe.example.com/subscribe?mailingId={{mailing.id}}&email={{subscri
 https://subscribe.example.com/unsubscribe?mailingId={{mailing.id}}&email={{receiver.email}}&code={{receiver.code}}
 ```
 
+## Отслеживание открытий и переходов
+
+Если у рассылки включено отслеживание, mail-server вставляет в письма ссылки на
+facade (`server.tracking.url` в mail-server — публичный адрес facade):
+
+| Адрес | Что делает | Вызов mail-server |
+|---|---|---|
+| `/t/o/<рассылка>/<токен>` | отдаёт прозрачную картинку 1×1, даже если mail-server недоступен | `POST /tracking/open` |
+| `/t/c/<рассылка>/<токен>/<номер>` | перенаправляет (302) на исходную ссылку; неизвестная — 404 | `POST /tracking/click` |
+
+Исходный адрес ссылки хранит mail-server, в адресе перехода его нет, поэтому
+через facade нельзя перенаправить на произвольный адрес. В nginx для этого
+нужен `location /t/` на facade (см. `deploy/lxc/nginx` в mail-server).
+
 ## Установка и запуск
 
 Нужен Node.js 22.23 или новее.

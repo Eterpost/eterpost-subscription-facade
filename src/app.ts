@@ -3,6 +3,7 @@ import { engine } from 'express-handlebars';
 import { join } from 'node:path';
 import { Config } from './config';
 import { mailingAction } from './mailingAction';
+import { trackClick, trackOpen } from './tracking';
 
 
 export interface AppOptions {
@@ -24,5 +25,8 @@ export function createApp (config: Config, options: AppOptions = {}): express.Ex
   const backend = { apiKey: config.apiKey, url: config.backend };
   app.get('/subscribe', mailingAction('subscribe', backend, config.mailingId));
   app.get('/unsubscribe', mailingAction('unsubscribe', backend, config.mailingId));
+  // Отслеживание открытий и переходов (server.tracking.url в mail-server)
+  app.get('/t/o/:mailingId/:token', trackOpen(backend));
+  app.get('/t/c/:mailingId/:token/:link', trackClick(backend));
   return app;
 }

@@ -172,6 +172,65 @@ describe('subscription-facade', function () {
     assert.match(page.text, /Сервис временно недоступен/);
   });
 
+  describe('tracking', function () {
+    it('should report an open and answer with a transparent GIF', async function () {
+      const facade = await startFacade(null, 'ep_secret');
+      const response = await fetch(`${facade}/t/o/12/k3Jd9Q-_x`);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('content-type'), 'image/gif');
+      assert.match(response.headers.get('cache-control') || '', /no-store/);
+      assert.equal(Buffer.from(await response.arrayBuffer()).subarray(0, 6).toString(), 'GIF89a');
+      assert.deepEqual(requests, [{
+        authorization: 'Bearer ep_secret',
+        body: { mailingId: 12, token: 'k3Jd9Q-_x' },
+        contentType: 'application/json',
+        url: '/tracking/open'
+      }]);
+    });
+
+    it('should answer with the GIF even when mail-server fails', async function () {
+      reply = { body: { error: 'oops', success: false }, status: 500 };
+      const facade = await startFacade();
+      const response = await fetch(`${facade}/t/o/12/tok`);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('content-type'), 'image/gif');
+    });
+
+    it('should redirect a click to the address from mail-server', async function () {
+      reply = {
+        body: { data: { url: 'https://example.com/offer?a=1' }, success: true }, status: 200
+      };
+      const facade = await startFacade();
+      const response = await fetch(`${facade}/t/c/12/tok/3`, { redirect: 'manual' });
+      assert.equal(response.status, 302);
+      assert.equal(response.headers.get('location'), 'https://example.com/offer?a=1');
+      assert.deepEqual(requests[0].body, { link: 3, mailingId: 12, token: 'tok' });
+      assert.equal(requests[0].url, '/tracking/click');
+    });
+
+    it('should answer 404 for an unknown link', async function () {
+      reply = { body: { error: 'Link not found', success: false }, status: 404 };
+      const facade = await startFacade();
+      const response = await fetch(`${facade}/t/c/12/tok/3`, { redirect: 'manual' });
+      assert.equal(response.status, 404);
+    });
+
+    it('should not redirect to a non-http address', async function () {
+      reply = { body: { data: { url: 'javascript:alert(1)' }, success: true }, status: 200 };
+      const facade = await startFacade();
+      const response = await fetch(`${facade}/t/c/12/tok/0`, { redirect: 'manual' });
+      assert.equal(response.status, 404);
+    });
+
+    it('should not call mail-server for malformed addresses', async function () {
+      const facade = await startFacade();
+      assert.equal((await fetch(`${facade}/t/o/x1/tok`)).status, 200);
+      assert.equal((await fetch(`${facade}/t/c/12/to.k/0`, { redirect: 'manual' })).status, 404);
+      assert.equal((await fetch(`${facade}/t/c/12/tok/-1`, { redirect: 'manual' })).status, 404);
+      assert.deepEqual(requests, []);
+    });
+  });
+
   it('should answer plain text 500 without error template', async function () {
     rmSync(join(templatesDir, 'error.hbs'));
     const config: Config = { backend: 'http://127.0.0.1:1', mailingId: null, port: 0 };
