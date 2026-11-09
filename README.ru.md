@@ -122,6 +122,11 @@ $ docker run -v $PWD/config.json:/app/config.json -p 8001:8001 subscription-faca
 - `npm run lint`, `npm run typecheck`;
 - `npm run watch` и `npm run watch-run` — пересборка и перезапуск при изменениях.
 
+## Ошибки и пожелания
+
+Ошибки и пожелания принимаются в Bugzilla Etersoft: продукт Eterpost,
+компонент eterpost-subscription-facade — [завести задачу](https://bugs.etersoft.ru/enter_bug.cgi?product=Eterpost&component=eterpost-subscription-facade).
+
 ## ![AGPL](https://www.gnu.org/graphics/agplv3-88x31.png) Лицензия
 
 GNU AGPL v3, см. [LICENSE](LICENSE).

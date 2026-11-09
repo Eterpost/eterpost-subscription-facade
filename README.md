@@ -122,6 +122,11 @@ If mail-server is unavailable, the response is 500.
 - `npm run lint`, `npm run typecheck`;
 - `npm run watch` and `npm run watch-run` — rebuild and restart on changes.
 
+## Bugs and feature requests
+
+Report bugs and feature requests in the Etersoft Bugzilla: product Eterpost,
+component eterpost-subscription-facade — [file a bug](https://bugs.etersoft.ru/enter_bug.cgi?product=Eterpost&component=eterpost-subscription-facade).
+
 ## ![AGPL](https://www.gnu.org/graphics/agplv3-88x31.png) License
 
 GNU AGPL v3, see [LICENSE](LICENSE).
